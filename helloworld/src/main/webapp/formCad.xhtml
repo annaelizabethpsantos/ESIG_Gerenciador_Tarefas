@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Controle de Notas</title>
+</h:head>
+<h:body style="margin: 30px 120px">
+
+	<div>
+		<p:commandButton value="Formulario do Aluno" oncomplete="PF('formAluno').show()"/>
+		<p:commandButton value="Mostrar Todos" action="#{Aluno.listar}" update="tabela formBusca" style="float:right; margin-left:20px"/>
+		<h:form id="formBusca" style="float: right">
+			<p:outputLabel for="busca" value="Nome: " />
+			<p:inputText id="busca" value="#{Aluno.nomeBusca}" />
+			<p:commandButton value="Buscar" action="#{Aluno.buscar}" update="tabela" style="float:right; margin-left:20px"/>
+		</h:form>
+	</div>
+	
+	<div>
+		<p:dataTable var="aluno" value="#{Aluno.listaAlunos}" id="tabela" style="padding-top:20px">
+			<p:column headerText="Nome" style="text-align:center">
+				<h:outputText value="#{aluno.nome}" />
+			</p:column>
+			<p:column headerText="Serie" style="width:80px; text-align:center">
+				<h:outputText value="#{aluno.ano}" />
+			</p:column>
+			<p:column headerText="Nota 1" style="width:80px; text-align:center">
+				<h:outputText value="#{aluno.nota1}" />
+			</p:column>
+			<p:column headerText="Nota 2" style="width:80px; text-align:center">
+				<h:outputText value="#{aluno.nota2}" />
+			</p:column>
+			<p:column headerText="Nota 3" style="width:80px; text-align:center">
+				<h:outputText value="#{aluno.nota3}" />
+			</p:column>
+			<p:column headerText="Média" style="width:80px; text-align:center">
+				<h:outputText value="#{aluno.media}" />
+			</p:column>
+			<p:column style="width:100px; text-align:center">
+				<p:commandButton value="Editar" action="#{Aluno.buscarPorId(aluno.id)}" update="form" oncomplete="PF('formAluno').show()"/>
+			</p:column>
+			<p:column style="width:100px; text-align:center">
+				<p:commandButton value="Deletar" action="#{Aluno.deletar(aluno.id)}" update="tabela" />
+			</p:column>
+		</p:dataTable>
+	</div>
+	
+	<p:dialog header="Formulario do Aluno" widgetVar="formAluno" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		<h:form id="form">
+			<h:panelGrid columns="6" style="padding-top:20px">
+				<div>
+					<p:outputLabel for="nome" value="Nome: " />
+					<p:inputText id="nome" value="#{Aluno.aluno.nome}" required="true"/>
+				</div>
+				<div>
+					<p:outputLabel for="serie" value="Serie: " />
+					<p:inputText id="serie" value="#{Aluno.aluno.ano}"> 
+						<f:validateDoubleRange minimum="1" maximum="9"/>
+					</p:inputText>
+				</div>
+				<div>
+					<p:outputLabel for="nota1" value="Nota 1: " />
+					<p:inputText id="nota1" value="#{Aluno.aluno.nota1}"> 
+						<f:validateDoubleRange minimum="0" maximum="10"/>
+					</p:inputText>
+				</div>
+				<div>
+					<p:outputLabel for="nota2" value="Nota 2: " />
+					<p:inputText id="nota2" value="#{Aluno.aluno.nota2}"> 
+						<f:validateDoubleRange minimum="0" maximum="10"/>
+					</p:inputText>
+				</div>
+				<div>
+					<p:outputLabel for="nota3" value="Nota 3: " />
+					<p:inputText id="nota3" value="#{Aluno.aluno.nota3}"> 
+						<f:validateDoubleRange minimum="0" maximum="10"/>
+					</p:inputText>
+				</div>
+			</h:panelGrid>
+			<div style="padding-top:25px; padding-bottom: 25px">
+				<p:commandButton value="Salvar" action="#{Aluno.salvar}" update="form tabela" style="float:right"/>
+				<p:commandButton value="Limpar" action="#{Aluno.limpar}" update="form" style="float:left"/>
+			</div>
+		</h:form>
+	</p:dialog>
+	
+</h:body>
+</html>

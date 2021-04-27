@@ -1,0 +1,162 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Gerenciador de Tarefas</title>
+</h:head>
+<h:body style="margin: 30px 120px">
+
+	<div>
+		<p:commandButton value="Cadastrar Tarefa"
+			oncomplete="PF('formTarefa').show()" />
+	</div>
+
+	<div>
+		<h:form id="form">
+			<table class="formulario" width="75%">
+
+				<tr>
+					<td><h:selectBooleanCheckbox value="#{tarefa.checkId}" /></td>
+					<th>Número:</th>
+					<td><h:inputText id="idtarefa" value="#{tarefa.filtroId.id}"
+							onchange="getEl('form:checkId).dom.checked = true;"
+							onfocus="getEl('form:checkId').dom.checked = true"
+							style="width: 70px;" /></td>
+				</tr>
+
+				<br />
+
+				<tr>
+					<td><h:selectBooleanCheckbox value="#{tarefa.checkDescricao}" /></td>
+					<th>Título/Descrição:</th>
+					<td><h:inputText id="descricao"
+							value="#{tarefa.filtroDescricao.descricao}"
+							onchange="getEl('form:checkDescricao).dom.checked = true;"
+							onfocus="getEl('form:checkDescricao').dom.checked = true"
+							style="width: 800px; height: 100px" /></td>
+				</tr>
+				<tr>
+					<td><h:selectBooleanCheckbox
+							value="#{tarefa.checkResponsavel}" /></td>
+					<th>Responsável:</th>
+					<td><h:inputText id="responsavel"
+							value="#{tarefa.filtroResponsavel.responsavel}"
+							onchange="getEl('form:checkResponsavel).dom.checked = true;"
+							onfocus="getEl('form:checkResponsavel').dom.checked = true"
+							style="width: 800px;" /></td>
+				</tr>
+				<tr>
+					<td><h:selectBooleanCheckbox
+							value="#{tarefa.checkResponsavel}" /></td>
+					<th>Situação:</th>
+					<td><h:selectOneMenu title="Prioridade da Tarefa"
+							id="prioridade" value="#{tarefa.filtroPrioridade.situacao}"
+							onchange="getEl('form:checkSituacao).dom.checked = true;"
+							onfocus="getEl('form:checkSituacao').dom.checked = true"
+							style="width: 200px;">
+							<f:selectItem itemValue="" itemLabel="--SELECIONE--" />
+							<f:selectItem itemValue="#{tarefa.prioridadeAlta}"
+								itemLabel="EM ANDAMENTO" />
+							<f:selectItem itemValue="#{tarefa.prioridadeMedia}"
+								itemLabel="CONCLUÍDA" />
+						</h:selectOneMenu></td>
+				</tr>
+				<br />
+			</table>
+			<div aling="center">
+				<p:commandButton value="Buscar Tarefas" action="#{Aluno.listar}"
+					update="tabela" style="float:right; margin-left:20px" />
+			</div>
+		</h:form>
+
+	</div>
+
+	<div>
+
+		<br />
+
+		<p:dataTable var="aluno" value="#{Aluno.listaAlunos}" id="tabela"
+			style="padding-top:20px">
+			<p:column headerText="Número" style="width:80px; text-align:center">
+				<h:outputText value="#{tarfa.tarefa.id}" />
+			</p:column>
+			<p:column headerText="Título" style="text-align:center">
+				<h:outputText value="#{tarefa.tarefa.titulo}" />
+			</p:column>
+			<p:column headerText="Responsável"
+				style="width:300px; text-align:center">
+				<h:outputText value="#{tarefa.tarefa.responsavel}" />
+			</p:column>
+			<p:column style="width:100px; text-align:center">
+				<p:commandButton value="Excluir"
+					action="#{tarefa.deletar(tarefa.id)}" update="tabela" />
+			</p:column>
+			<p:column style="width:100px; text-align:center">
+				<p:commandButton value="Concluir" action="#{tarefa.tarefaConcluída}"
+					update="tabela" />
+			</p:column>
+		</p:dataTable>
+
+	</div>
+
+	<p:dialog header="Cadastrar Tarefa" widgetVar="formTarefa" modal="true"
+		showEffect="fade" hideEffect="fade" resizable="false">
+		<h:form id="formCadastrarTarefa">
+			<table class="formulario" width="75%">
+
+				<tr>
+					<th width="3%" />
+					<th width="17%" style="white-space: nowrap;">Título:</th>
+					<td><h:inputText id="titulo" value="#{tarefa.tarefa.titulo}"
+							required="true" style="width: 420px;" /></td>
+				</tr>
+
+				<br />
+
+				<tr>
+					<th width="3%" />
+					<th width="17%" style="white-space: nowrap;">Descrição:</th>
+					<td><h:inputText id="descricao"
+							value="#{tarefa.tarefa.descricao}" required="true"
+							style="width: 420px; height: 100px" /></td>
+				</tr>
+				<tr>
+					<th width="3%" />
+					<th width="17%" style="white-space: nowrap;">Responsável:</th>
+					<td><h:inputText id="responsavel"
+							value="#{tarefa.tarefa.responsavel}" required="true"
+							style="width: 420px;" /></td>
+				</tr>
+				<tr>
+					<th width="3%" />
+					<th width="17%" style="white-space: nowrap;">Prioridade:</th>
+					<td><h:selectOneMenu title="Prioridade da Tarefa"
+							id="prioridade" value="#{tarefa.filtroPrioridade}"
+							style="width: 200px;">
+							<f:selectItem itemValue="" itemLabel="--SELECIONE--" />
+							<f:selectItem itemValue="#{tarefa.prioridadeAlta}"
+								itemLabel="PRIORIDADE ALTA" />
+							<f:selectItem itemValue="#{tarefa.prioridadeMedia}"
+								itemLabel="PRIORIDADE MEDIA" />
+							<f:selectItem itemValue="#{tarefa.prioridadeBaixa}"
+								itemLabel="PRIORIDADE BAIXA" />
+						</h:selectOneMenu></td>
+				</tr>
+				<tr>
+					<th width="3%" />
+					<th width="17%" style="white-space: nowrap;">Data:</th>
+					<td><h:inputText id="data" value="#{tarefa.tarefa.data}"
+							required="true" style="width: 200px;" /></td>
+				</tr>
+			</table>
+			<div style="padding-top: 25px; padding-bottom: 25px">
+				<p:commandButton value="Cadastrar" action="#{tarefa.cadastrar}"
+					update="form tabela" style="float:right" />
+			</div>
+		</h:form>
+	</p:dialog>
+
+</h:body>
+</html>
