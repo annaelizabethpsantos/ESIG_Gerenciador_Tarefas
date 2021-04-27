@@ -9,7 +9,7 @@ import javax.faces.bean.ViewScoped;
 import helloworld.DAO.TarefaDAO;
 import helloworld.Model.Tarefa;
 
-@ManagedBean
+@ManagedBean(name="tarefa")
 @ViewScoped
 public class TarefaBean implements Serializable {
 
